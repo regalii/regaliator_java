@@ -22,15 +22,30 @@
 
 package com.regalii.regaliator.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
  */
-public class Base64Test {
-    @Test
-    public void testEncodeBase64() {
-        Assert.assertEquals("SGVsbG8gV29ybGQh", Base64.encode("Hello World!".getBytes()));
+public class MD5 {
+    static private final String ALGORITHM = "MD5";
+
+    static public String digest(final String message) {
+        final MessageDigest messageDigest = getMessageDigest();
+        if (messageDigest == null) {
+            return "";
+        }
+        final byte[] result = messageDigest.digest(message.getBytes());
+
+        return Base64.encode(result);
+    }
+
+    static private MessageDigest getMessageDigest() {
+        try {
+            return MessageDigest.getInstance(ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
     }
 }

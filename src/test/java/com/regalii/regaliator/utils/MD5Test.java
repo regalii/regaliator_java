@@ -28,9 +28,9 @@ import org.junit.Test;
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
  */
-public class Base64Test {
+public class MD5Test {
     @Test
-    public void testEncodeBase64() {
-        Assert.assertEquals("SGVsbG8gV29ybGQh", Base64.encode("Hello World!".getBytes()));
+    public void testMD5HelloWorld() {
+        Assert.assertEquals("7Qdih1MuhjZehB6Sv8UNjA==", MD5.digest("Hello World!"));
     }
 }
