@@ -22,34 +22,33 @@
 
 package com.regalii.regaliator.v30;
 
-import com.regalii.regaliator.api.AbstractClient;
+import com.regalii.regaliator.api.AbstractEndpoint;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Response;
+
+import java.util.Map;
 
 /**
- * Created by Geoffrey Roguelon on 17/01/2017.
+ * Created by Geoffrey Roguelon on 18/01/2017.
  */
-public class Client extends AbstractClient {
-    public Client(Configuration configuration) {
+public class Transaction extends AbstractEndpoint {
+    public Transaction(Configuration configuration) {
         super(configuration);
     }
 
-    public Account getAccount() {
-        return new Account(configuration);
+    public Response list(final Map<String, Object> params) {
+        return request.post("/transactions", params);
     }
 
-    public Bill getBill() {
-        return new Bill(configuration);
+    public Response pay(final Map<String, Object> params) {
+        return request.post("/transaction/pay", params);
     }
 
-    public Biller getBiller() {
-        return new Biller(configuration);
+    public Response reverse(final Map<String, Object> params) {
+        return request.post("/transaction/reverse", params);
     }
 
-    public Rate getRate() {
-        return new Rate(configuration);
-    }
-
-    public Transaction getTransaction() {
-        return new Transaction(configuration);
+    public Response cancel(final Map<String, Object> params) {
+        return request.post("/transaction/cancel", params);
     }
 }

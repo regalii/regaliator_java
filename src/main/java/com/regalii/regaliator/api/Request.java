@@ -45,14 +45,32 @@ public class Request {
         this.configuration = configuration;
     }
 
-    public Response post(final String endpoint) {
-        return post(endpoint, new HashMap<>());
+    public Response get(final String endpoint) {
+        return get(endpoint, new HashMap<>(0));
     }
 
-    public Response post(final String endpoint, Map<String, Object> params) {
+    public Response get(final String endpoint, final Map<String, Object> params) {
+        final HttpURLConnection connection = buildConnection("GET", endpoint, null);
+
+        return new Response(connection);
+    }
+
+    public Response patch(final String endpoint, final Map<String, Object> params) {
+        return requestWithBody("PATCH", endpoint, params);
+    }
+
+    public Response post(final String endpoint) {
+        return post(endpoint, new HashMap<>(0));
+    }
+
+    public Response post(final String endpoint, final Map<String, Object> params) {
+        return requestWithBody("POST", endpoint, params);
+    }
+
+    private Response requestWithBody(final String httpMethod, final String endpoint, final Map<String, Object> params) {
         final String json = JSON.dump(params);
         final String md5 = MD5.digest(json);
-        final HttpURLConnection connection = buildConnection("POST", endpoint, md5);
+        final HttpURLConnection connection = buildConnection(httpMethod, endpoint, md5);
 
         connection.setDoOutput(true);
         final OutputStream os;

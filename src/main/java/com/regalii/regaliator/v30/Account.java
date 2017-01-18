@@ -22,34 +22,19 @@
 
 package com.regalii.regaliator.v30;
 
-import com.regalii.regaliator.api.AbstractClient;
+import com.regalii.regaliator.api.AbstractEndpoint;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Response;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
  */
-public class Client extends AbstractClient {
-    public Client(Configuration configuration) {
+public class Account extends AbstractEndpoint {
+    public Account(Configuration configuration) {
         super(configuration);
     }
 
-    public Account getAccount() {
-        return new Account(configuration);
-    }
-
-    public Bill getBill() {
-        return new Bill(configuration);
-    }
-
-    public Biller getBiller() {
-        return new Biller(configuration);
-    }
-
-    public Rate getRate() {
-        return new Rate(configuration);
-    }
-
-    public Transaction getTransaction() {
-        return new Transaction(configuration);
+    public Response info() {
+        return request.get("/account");
     }
 }
