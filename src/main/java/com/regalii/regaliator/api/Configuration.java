@@ -37,7 +37,7 @@ public class Configuration {
     static private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.RFC_1123_DATE_TIME;
     static private final ZoneId DATE_ZONE = ZoneId.of("GMT");
 
-    private final Versions version;
+    private final Version version;
 
     private final String host;
     private final String apiKey;
@@ -45,7 +45,7 @@ public class Configuration {
 
     private Boolean useSSL;
 
-    public Configuration(final Versions version, final String host, final String apiKey, final String secretKey) {
+    public Configuration(final Version version, final String host, final String apiKey, final String secretKey) {
         this.version = version;
         this.host = host;
         this.apiKey = apiKey;
@@ -89,7 +89,7 @@ public class Configuration {
         return CONTENT_TYPE;
     }
 
-    public Versions getVersion() {
+    public Version getVersion() {
         return version;
     }
 

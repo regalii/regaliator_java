@@ -34,17 +34,17 @@ import java.util.Map;
  * Created by Geoffrey Roguelon on 18/01/2017.
  */
 public class ConfigurationTest {
-    static private final Versions VERSION = null;
+    static private final Version VERSION = null;
     static private final String HOST = "api.regalii.dev";
     static private final String API_KEY = "key";
     static private final String SECRET_KEY = "secret";
 
-    static private final Map<Versions, Class<? extends AbstractClient>> VERSIONS = new HashMap<>(Versions.values().length);
+    static private final Map<Version, Class<? extends AbstractClient>> VERSIONS = new HashMap<>(Version.values().length);
 
     static {
-        VERSIONS.put(Versions.v1_5, com.regalii.regaliator.v15.Client.class);
-        VERSIONS.put(Versions.v3_0, com.regalii.regaliator.v30.Client.class);
-        VERSIONS.put(Versions.v3_1, com.regalii.regaliator.v31.Client.class);
+        VERSIONS.put(Version.v1_5, com.regalii.regaliator.v15.Client.class);
+        VERSIONS.put(Version.v3_0, com.regalii.regaliator.v30.Client.class);
+        VERSIONS.put(Version.v3_1, com.regalii.regaliator.v31.Client.class);
     }
 
     private Configuration subject;
@@ -70,7 +70,7 @@ public class ConfigurationTest {
 
     @Test
     public void testBuildClientReturnsClient() {
-        for (Map.Entry<Versions, Class<? extends AbstractClient>> pair : VERSIONS.entrySet()) {
+        for (Map.Entry<Version, Class<? extends AbstractClient>> pair : VERSIONS.entrySet()) {
             final Configuration subject = new Configuration(pair.getKey(), HOST, API_KEY, SECRET_KEY);
 
             Assert.assertEquals(pair.getValue(), subject.buildClient().getClass());
@@ -79,7 +79,7 @@ public class ConfigurationTest {
 
     @Test
     public void testGetAcceptReturnsString() {
-        final Configuration subject = new Configuration(Versions.randomVersion(), HOST, API_KEY, SECRET_KEY);
+        final Configuration subject = new Configuration(Version.randomVersion(), HOST, API_KEY, SECRET_KEY);
 
         Assert.assertTrue(subject.getAccept().matches("^application/vnd\\.regalii\\.v[0-9]\\.[0-9]\\+json$"));
     }
@@ -96,7 +96,7 @@ public class ConfigurationTest {
 
     @Test
     public void testGetClientReturnsClient() {
-        final Configuration subject = new Configuration(Versions.randomVersion(), HOST, API_KEY, SECRET_KEY);
+        final Configuration subject = new Configuration(Version.randomVersion(), HOST, API_KEY, SECRET_KEY);
 
         Assert.assertSame(subject.getClient(), subject.getVersion().getClient());
     }
@@ -108,7 +108,7 @@ public class ConfigurationTest {
 
     @Test
     public void testGetVersionReturnsVersions() {
-        final Versions version = Versions.randomVersion();
+        final Version version = Version.randomVersion();
         final Configuration subject = new Configuration(version, HOST, API_KEY, SECRET_KEY);
 
         Assert.assertSame(version, subject.getVersion());
