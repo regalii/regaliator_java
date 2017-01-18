@@ -22,15 +22,60 @@
 
 package com.regalii.regaliator.api;
 
-import javax.net.ssl.HttpsURLConnection;
+import com.regalii.regaliator.utils.JSON;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.Map;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
  */
 public class Response {
-    protected final HttpsURLConnection connection;
+    protected final HttpURLConnection connection;
 
-    public Response(HttpsURLConnection connection) {
+    public Response(HttpURLConnection connection) {
         this.connection = connection;
+    }
+
+    public boolean isSuccess() {
+        return httpCode() >= 200 && httpCode() < 300;
+    }
+
+    public int httpCode() {
+        try {
+            return connection.getResponseCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public Map<String, Object> body() {
+        final String raw = rawBody();
+
+        //noinspection unchecked
+        return (Map<String, Object>) JSON.loadToMap(raw);
+    }
+
+    private String rawBody() {
+        try {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            final StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            reader.close();
+
+            return response.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

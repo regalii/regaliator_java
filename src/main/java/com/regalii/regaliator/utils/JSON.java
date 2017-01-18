@@ -24,6 +24,8 @@ package com.regalii.regaliator.utils;
 
 import com.google.gson.Gson;
 
+import java.util.Map;
+
 /**
  * Created by Geoffrey Roguelon on 18/01/2017.
  */
@@ -32,5 +34,11 @@ public class JSON {
         final Gson gson = new Gson();
 
         return gson.toJson(object);
+    }
+
+    static public Object loadToMap(final String json) {
+        final Gson gson = new Gson();
+
+        return gson.fromJson(json, Map.class);
     }
 }

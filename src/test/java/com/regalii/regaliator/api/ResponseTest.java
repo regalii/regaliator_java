@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -38,7 +39,7 @@ public class ResponseTest {
             super(connection);
         }
 
-        public HttpsURLConnection getConnection() {
+        public HttpURLConnection getConnection() {
             return connection;
         }
     }

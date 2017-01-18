@@ -35,6 +35,6 @@ public class Account extends AbstractEndpoint {
     }
 
     public Response info() {
-        return request.get("/account");
+        return request.post("/account");
     }
 }

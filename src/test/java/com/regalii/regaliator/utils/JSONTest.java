@@ -32,12 +32,21 @@ import java.util.Map;
  * Created by Geoffrey Roguelon on 18/01/2017.
  */
 public class JSONTest {
+    static private String JSON_STR = "{\"say\":\"Hello World!\",\"age\":1.0}";
+    static private Map<String, Object> MAP_OBJ = new HashMap<>(2);
+
+    static {
+        MAP_OBJ.put("say", "Hello World!");
+        MAP_OBJ.put("age", 1.0);
+    }
+
     @Test
     public void testJSONDump() {
-        final Map<String, Object> subject = new HashMap<>();
-        subject.put("say", "Hello World!");
-        subject.put("age", 1);
+        Assert.assertEquals(JSON_STR, JSON.dump(MAP_OBJ));
+    }
 
-        Assert.assertEquals("{\"say\":\"Hello World!\",\"age\":1}", JSON.dump(subject));
+    @Test
+    public void testJSONLoadToMap() {
+        Assert.assertEquals(MAP_OBJ, JSON.loadToMap(JSON_STR));
     }
 }
