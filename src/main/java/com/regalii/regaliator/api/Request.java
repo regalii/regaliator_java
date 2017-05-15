@@ -109,7 +109,7 @@ public class Request {
             connection.setRequestProperty("Authorization", authHash);
             connection.setRequestProperty("Content-MD5", md5);
             connection.setRequestProperty("Content-Type", configuration.getContentType());
-            connection.setRequestProperty("Date", configuration.getDate());
+            connection.setRequestProperty("Date", date);
             connection.setRequestProperty("User-Agent", configuration.getUserAgent());
 
             return connection;
