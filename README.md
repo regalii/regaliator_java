@@ -4,7 +4,7 @@ A Java HTTP client for consuming Regalii's API.
 
 ## Usage
 
-First of all, you need a `Configuration` instance:
+You need a `Configuration` instance and get from Regalii your [credentials](https://www.regalii.com/contact-us).
 
 ```java
 package com.regalii.regaliator;
@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class Regaliator {
     static public void main(final String[] args) {
-        final Configuration config = new Configuration(Version.v1_5, "api.regalii.dev", "api_key", "secret_key");
-        config.setUseSSL(false); // Support of SSL will be added very soon.
+        final Configuration config = new Configuration(Version.v1_5, "api.casiregalii.com", "api_key", "secret_key");
+        config.setUseSSL(true);
 
         final Client client = (Client) config.buildClient();
         final Response response = client.getAccount().info();
@@ -34,6 +34,43 @@ This will display the balance:
 ```
 => 1797.41
 ```
+
+### Example
+
+1. Save the previous code in: `src/main/java/com/regaliator/Regaliator.java`
+
+2. Download [Gson](https://github.com/google/gson) library and put it in the root dir of this project:
+```
+regalii:regaliator_java$ ls
+README.md gson-2.8.0.jar  pom.xml   src   target
+```
+
+3. Be sure to have [Maven](https://maven.apache.org/) installed:
+```
+regalii:regaliator_java$ mvn --version
+Apache Maven 3.5.0 (ff8f5e7444045639af65f6095c62210b5713f426; 2017-04-03T14:39:06-05:00)
+Maven home: /usr/local/Cellar/maven/3.5.0/libexec
+```
+
+4. Package Regaliator executing:
+```
+regalii:regaliator_java$ mvn package
+```
+
+This should generate the jar file: `target/regaliator-0.0.1-SNAPSHOT.jar`.
+
+5. Run the main class we just added to the project, this will output your balance:
+
+```
+regalii:regaliator_java$ java -cp "gson-2.8.0.jar:target/regaliator-0.0.1-SNAPSHOT.jar" com.regalii.regaliator.Regaliator
+1797.41
+```
+
+In case of wrong credentials, you will a 401 Unauthorized HTTP response, with the following Exception:
+```
+java.io.IOException: Server returned HTTP response code: 401 for URL: https://api.casiregalii.com/account
+```
+
 
 ### Versions
 
