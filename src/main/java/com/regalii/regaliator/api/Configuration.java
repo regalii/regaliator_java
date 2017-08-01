@@ -28,13 +28,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
  */
 public class Configuration {
     static private final String CONTENT_TYPE = "application/json";
-    static private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.RFC_1123_DATE_TIME;
+    static private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss O").withLocale(Locale.US);
     static private final ZoneId DATE_ZONE = ZoneId.of("GMT");
 
     private final Version version;
