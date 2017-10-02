@@ -62,9 +62,15 @@ public class Response {
 
     private String rawBody() {
         try {
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             final StringBuilder response = new StringBuilder();
+            BufferedReader reader;
             String inputLine;
+
+            if(isSuccess()) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else{
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
 
             while ((inputLine = reader.readLine()) != null) {
                 response.append(inputLine);
