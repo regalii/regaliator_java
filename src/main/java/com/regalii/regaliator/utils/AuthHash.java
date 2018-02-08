@@ -37,7 +37,7 @@ public class AuthHash {
     }
 
     public String generate(final String md5, final String endpoint, final String date) {
-        final String canonicalName = String.join(DELIMITER, configuration.getContentType(), md5, endpoint, date);
+        final String canonicalName = String.join(DELIMITER, configuration.getContentType(), md5 == null ? "" : md5, endpoint, date);
         final String fingerprint = HMACSHA1.digest(configuration.getSecretKey(), canonicalName);
 
         return "APIAuth " + configuration.getApiKey() + ":" + fingerprint;
