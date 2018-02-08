@@ -46,5 +46,10 @@ public class AuthHashTest {
                 "/fake",
                 "Wed, 18 Jan 2017 16:27:55 GMT"
         ));
+        Assert.assertEquals("APIAuth key:iGJnnkbZcltdNo+y9ga1K7BPJQw=", subject.generate(
+                null,
+                "/fake",
+                "Wed, 18 Jan 2017 16:27:55 GMT"
+        ));
     }
 }
