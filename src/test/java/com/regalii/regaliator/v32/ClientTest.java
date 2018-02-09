@@ -38,8 +38,8 @@ public class ClientTest {
     static private final Configuration configuration = new Configuration(
     			Version.v3_2,
             "apix.casiregalii.com",
-            "7d28936c2d877f0251300e8ebf361489",
-    			"rafpb7lSAQ0K5r3lyOnny0ZCsWo/gOMEeEqGg8yVJ4Vb3h4qYpM/g7rt3PkasGNQkDuliaTl493rv194zi3IGQ=="
+            "key",
+    			"secret"
     );
 
     private Client subject;
@@ -61,7 +61,7 @@ public class ClientTest {
     
     @Test
     public void testAccount() {
-    		Assert.assertNotNull(subject.getAccount().info());
+
     		Assert.assertEquals("", subject.getAccount().info().body());
     }
 }
