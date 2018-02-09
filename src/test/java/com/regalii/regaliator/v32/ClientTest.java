@@ -20,26 +20,48 @@
  * SOFTWARE.
  */
 
-package com.regalii.regaliator.utils;
+package com.regalii.regaliator.v32;
 
+import com.regalii.regaliator.api.AbstractClient;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Version;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by Geoffrey Roguelon on 18/01/2017.
  */
-public class AuthHash {
-    static private final String DELIMITER = ",";
+public class ClientTest {
+    static private final Configuration configuration = new Configuration(
+    			Version.v3_2,
+            "apix.casiregalii.com",
+            "key",
+    			"secret"
+    );
 
-    private final Configuration configuration;
+    private Client subject;
 
-    public AuthHash(final Configuration configuration) {
-        this.configuration = configuration;
+    @Before
+    public void setupSubject() {
+        subject = new Client(configuration);
     }
 
-    public String generate(final String md5, final String endpoint, final String date) {
-        final String canonicalName = String.join(DELIMITER, configuration.getContentType(), md5 == null ? "" : md5, endpoint, date);
-        final String fingerprint = HMACSHA1.digest(configuration.getSecretKey(), canonicalName);
+    @After
+    public void destroySubject() {
+        subject = null;
+    }
 
-        return "APIAuth " + configuration.getApiKey() + ":" + fingerprint;
+    @Test
+    public void testClassInheritsFromAbstractClient() {
+        Assert.assertTrue(AbstractClient.class.isAssignableFrom(Client.class));
+    }
+    
+    @Test
+    public void testAccount() {
+
+    		Assert.assertEquals("", subject.getAccount().info().body());
     }
 }

@@ -26,6 +26,7 @@ import com.regalii.regaliator.utils.JSON;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.Map;
@@ -61,21 +62,13 @@ public class Response {
     }
 
     private String rawBody() {
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+        			isSuccess() ? connection.getInputStream() : connection.getErrorStream()))) {
             final StringBuilder response = new StringBuilder();
-            BufferedReader reader;
             String inputLine;
-
-            if(isSuccess()) {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            } else{
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-            }
-
             while ((inputLine = reader.readLine()) != null) {
                 response.append(inputLine);
             }
-            reader.close();
 
             return response.toString();
         } catch (IOException e) {

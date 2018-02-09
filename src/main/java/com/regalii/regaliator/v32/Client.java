@@ -20,26 +20,36 @@
  * SOFTWARE.
  */
 
-package com.regalii.regaliator.utils;
+package com.regalii.regaliator.v32;
 
+import com.regalii.regaliator.api.AbstractClient;
 import com.regalii.regaliator.api.Configuration;
 
 /**
- * Created by Geoffrey Roguelon on 18/01/2017.
+ * Created by Geoffrey Roguelon on 17/01/2017.
  */
-public class AuthHash {
-    static private final String DELIMITER = ",";
-
-    private final Configuration configuration;
-
-    public AuthHash(final Configuration configuration) {
-        this.configuration = configuration;
+public class Client extends AbstractClient {
+    public Client(Configuration configuration) {
+        super(configuration);
     }
 
-    public String generate(final String md5, final String endpoint, final String date) {
-        final String canonicalName = String.join(DELIMITER, configuration.getContentType(), md5 == null ? "" : md5, endpoint, date);
-        final String fingerprint = HMACSHA1.digest(configuration.getSecretKey(), canonicalName);
+    public Account getAccount() {
+        return new Account(configuration);
+    }
 
-        return "APIAuth " + configuration.getApiKey() + ":" + fingerprint;
+    public Bill getBill() {
+        return new Bill(configuration);
+    }
+
+    public Biller getBiller() {
+        return new Biller(configuration);
+    }
+
+    public Rate getRate() {
+        return new Rate(configuration);
+    }
+
+    public Transaction getTransaction() {
+        return new Transaction(configuration);
     }
 }
