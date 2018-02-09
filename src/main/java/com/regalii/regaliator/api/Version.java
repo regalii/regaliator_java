@@ -30,7 +30,8 @@ import java.util.Random;
 public enum Version {
     v1_5("1.5", com.regalii.regaliator.v15.Client.class),
     v3_0("3.0", com.regalii.regaliator.v30.Client.class),
-    v3_1("3.1", com.regalii.regaliator.v31.Client.class);
+    v3_1("3.1", com.regalii.regaliator.v31.Client.class),
+    v3_2("3.2", com.regalii.regaliator.v32.Client.class);
 
     private String version;
     private Class<? extends AbstractClient> client;

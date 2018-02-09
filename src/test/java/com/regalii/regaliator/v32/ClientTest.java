@@ -36,10 +36,10 @@ import org.junit.Test;
  */
 public class ClientTest {
     static private final Configuration configuration = new Configuration(
-    			Version.v3_2,
-            "apix.casiregalii.com",
+            null,
+            "https://api.regalii.dev",
             "key",
-    			"secret"
+            "secret"
     );
 
     private Client subject;
@@ -57,11 +57,5 @@ public class ClientTest {
     @Test
     public void testClassInheritsFromAbstractClient() {
         Assert.assertTrue(AbstractClient.class.isAssignableFrom(Client.class));
-    }
-    
-    @Test
-    public void testAccount() {
-
-    		Assert.assertEquals("", subject.getAccount().info().body());
     }
 }
