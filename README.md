@@ -25,7 +25,12 @@ public class Regaliator {
         final Response response = client.getAccount().info();
         final Map<String, Object> body = response.body();
 
-        System.out.println(body.get("balance"));
+        if(response.isSuccess()){
+          System.out.println(body.get("balance"));
+        } else {
+          System.out.println("Code:" + response.httpCode());
+          System.out.println("Error:" + body.get("message"));
+        }
     }
 }
 ```
@@ -66,11 +71,7 @@ regalii:regaliator_java$ java -cp "gson-2.8.0.jar:target/regaliator-0.0.1-SNAPSH
 1797.41
 ```
 
-In case of wrong credentials, you will a 401 Unauthorized HTTP response, with the following Exception:
-```
-java.io.IOException: Server returned HTTP response code: 401 for URL: https://api.casiregalii.com/account
-```
-
+In case of wrong credentials, you will a 401 Unauthorized HTTP response.
 
 ### Versions
 
