@@ -27,8 +27,10 @@ import com.regalii.regaliator.utils.JSON;
 import com.regalii.regaliator.utils.MD5;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,13 +48,17 @@ public class Request {
     }
 
     public Response get(final String endpoint) {
-        return get(endpoint, new HashMap<>(0));
+        final HttpURLConnection connection = buildConnection("GET", endpoint, null);
+        return new Response(connection);
     }
 
     public Response get(final String endpoint, final Map<String, Object> params) {
-        final HttpURLConnection connection = buildConnection("GET", endpoint, null);
-
-        return new Response(connection);
+        if(params == null) {
+            return get(endpoint);
+        } else {
+            final HttpURLConnection connection = buildConnection("GET", endpoint + "?" + urlEncodeUTF8(params), null);
+            return new Response(connection);
+        }
     }
 
     public Response patch(final String endpoint, final Map<String, Object> params) {
@@ -84,6 +90,28 @@ public class Request {
         }
 
         return new Response(connection);
+    }
+
+    private static String urlEncodeUTF8(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedOperationException(e);
+        }
+    }
+
+    private String urlEncodeUTF8(Map<?,?> map) {
+       StringBuilder sb = new StringBuilder();
+        for (Map.Entry<?,?> entry : map.entrySet()) {
+            if (sb.length() > 0) {
+                sb.append("&");
+            }
+            sb.append(String.format("%s=%s",
+                urlEncodeUTF8(entry.getKey().toString()),
+                urlEncodeUTF8(entry.getValue().toString())
+            ));
+        }
+        return sb.toString();
     }
 
     private URL buildURL(final String endpoint) throws MalformedURLException {
