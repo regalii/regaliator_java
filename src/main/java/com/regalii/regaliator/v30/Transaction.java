@@ -37,7 +37,7 @@ public class Transaction extends AbstractEndpoint {
     }
 
     public Response list(final Map<String, Object> params) {
-        return request.post("/transactions", params);
+        return request.get("/transactions", params);
     }
 
     public Response pay(final Map<String, Object> params) {
