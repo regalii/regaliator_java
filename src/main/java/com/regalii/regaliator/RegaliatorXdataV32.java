@@ -33,7 +33,8 @@ public class RegaliatorXdataV32 {
     Map<String, Object> body;
     String bill_id = "";
 
-    // Create basic bill
+    System.out.println("--- CREATE BASIC BILL ---");
+
     Map<String, Object> map = new HashMap<String, Object>();
 
     map.put("login", "regalii");
@@ -48,6 +49,8 @@ public class RegaliatorXdataV32 {
       System.out.println(body);
 
       // Check how many bills there are by calling GET/bills
+      System.out.println("--- PRINT # OF EXISTING BILLS ---");
+
       response = bill_obj.list(null);
       body = response.body();
 
@@ -61,7 +64,19 @@ public class RegaliatorXdataV32 {
     }
 
     if (!bill_id.equals("")) {
-      // Delete recently created bill
+      System.out.println("--- GET SINGLE BILL DETAILS ---");
+
+      response = bill_obj.show(bill_id);
+      body = response.body();
+
+      if(response.isSuccess()){
+        System.out.println(body);
+      } else {
+        print_error_message(response, body);
+      }
+
+      System.out.println("--- DELETE RECENTLY CREATED BILL ---");
+
       response = bill_obj.delete(bill_id);
       body = response.body();
 
@@ -73,6 +88,8 @@ public class RegaliatorXdataV32 {
     }
 
     // Total should have decreased if the basic bill was previously created
+    System.out.println("--- PRINT # OF EXISTING BILLS ---");
+
     response = bill_obj.list(null);
     body = response.body();
 
@@ -82,12 +99,13 @@ public class RegaliatorXdataV32 {
       print_error_message(response, body);
     }
 
-    // Create bill with MFA of type question
+    System.out.println("--- CREATE BILL WITH MFA OF TYPE QUESTION ---");
+
     map = new HashMap<String, Object>();
 
     // Once this challenge has been answered, it will need to be changed to
     // test again
-    map.put("login", "question.new_york");
+    map.put("login", "question.thalia");
     map.put("password", "12345");
     map.put("biller_id", "04257afb-d956-4606-816b-4bc540cd187f");
 
@@ -95,31 +113,65 @@ public class RegaliatorXdataV32 {
     body = response.body();
     bill_id = "";
 
-    if(response.isSuccess()){
+    if(response.isSuccess()) {
+      System.out.println(body);
       bill_id = (String) body.get("uuid");
-      System.out.println(body.get("mfa_challenges"));
+      Object challenges = body.get("mfa_challenges");
 
-      // Answer challenge
-      Object[] challenges_array = JSON.getArray(body.get("mfa_challenges"));
-      Map<String, Object> challenge = (Map<String, Object>) JSON.loadToMap(JSON.dump(challenges_array[0]));
-      Map<String, String> challenge_response = new HashMap<String, String>();
-      challenge_response.put("id",  (String) challenge.get("uuid"));
-      challenge_response.put("type", "question");
-      challenge_response.put("response", "new_york");
-      ArrayList<Map<String, String>> a = new ArrayList<Map<String, String>>();
-      a.add(challenge_response);
+      if (challenges != null) {
+        System.out.println(challenges);
 
-      map.put("mfa_challenges", a);
-      System.out.println(map.toString());
+        System.out.println("--- ANSWER CHALLENGE ---");
 
-      response = bill_obj.update(bill_id, map);
+        Object[] challenges_array = JSON.getArray(challenges);
+        Map<String, Object> challenge = (Map<String, Object>) JSON.loadToMap(JSON.dump(challenges_array[0]));
+        Map<String, String> challenge_response = new HashMap<String, String>();
+        challenge_response.put("id",  (String) challenge.get("uuid"));
+        challenge_response.put("type", "question");
+        challenge_response.put("response", "thalia");
+        ArrayList<Map<String, String>> a = new ArrayList<Map<String, String>>();
+        a.add(challenge_response);
+
+        map.put("mfa_challenges", a);
+        System.out.println(map.toString());
+
+        response = bill_obj.update(bill_id, map);
+        body = response.body();
+
+        if(response.isSuccess()){
+          System.out.println(body);
+        } else {
+          print_error_message(response, body);
+        }
+      }
+
+      System.out.println("--- REFRESH BILL ---");
+
+      response = bill_obj.refresh(bill_id);
       body = response.body();
 
-      if(response.isSuccess()){
+      if(response.isSuccess()) {
         System.out.println(body);
       } else {
         print_error_message(response, body);
       }
+    } else {
+      print_error_message(response, body);
+    }
+
+    System.out.println("--- BULK REFRESH ---");
+
+    ArrayList<String> bill_ids = new ArrayList<String>();
+    bill_ids.add(bill_id);
+
+    map = new HashMap<String, Object>();
+    map.put("bill_ids", bill_ids);
+
+    response = bill_obj.bulk_refresh(map);
+    body = response.body();
+
+    if(response.isSuccess()) {
+      System.out.println(body);
     } else {
       print_error_message(response, body);
     }

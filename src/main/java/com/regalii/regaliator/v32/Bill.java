@@ -41,9 +41,9 @@ public class Bill extends AbstractEndpoint {
     return request.get("/bills", params);
   }
 
-  // public Response show(final int id) {
-  //   return request.get("/bills/" + id);
-  // }
+  public Response show(final String id) {
+    return request.get("/bills/" + id);
+  }
 
   public Response update(final String id, final Map<String, Object> params) {
     return request.patch("/bills/" + id, params);
@@ -53,10 +53,11 @@ public class Bill extends AbstractEndpoint {
     return request.delete("/bills/" + uuid);
   }
 
-  // public Response refresh(final int id) {
-  //   return request.post("/bills/" + id + "/refresh");
-  // }
+  public Response refresh(final String id) {
+    return request.post("/bills/" + id + "/refresh");
+  }
 
-  // bulk_refresh
-
+  public Response bulk_refresh(final Map<String, Object> params) {
+    return request.post("/bills/bulk_refresh", params);
+  }
 }
