@@ -22,13 +22,26 @@
 
 package com.regalii.regaliator.v32;
 
+import com.regalii.regaliator.api.AbstractEndpoint;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Response;
 
-/**
- * Created by Geoffrey Roguelon on 18/01/2017.
- */
-public class Transaction extends com.regalii.regaliator.v30.Transaction {
-    public Transaction(Configuration configuration) {
-        super(configuration);
-    }
+import java.util.Map;
+
+public class Transaction extends AbstractEndpoint {
+  public Transaction(Configuration configuration) {
+      super(configuration);
+  }
+
+  public Response list(final Map<String, Object> params) {
+    return request.get("/transactions", params);
+  }
+
+  public Response create(final Map<String, Object> params) {
+    return request.post("/transactions", params);
+  }
+
+  public Response delete(final String uuid) {
+    return request.delete("/transactions/" + uuid);
+  }
 }

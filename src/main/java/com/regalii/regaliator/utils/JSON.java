@@ -41,4 +41,11 @@ public class JSON {
 
         return gson.fromJson(json, Map.class);
     }
+
+    static public Object[] getArray(final Object root) {
+        final Gson gson = new Gson();
+        String json = JSON.dump(root);
+
+        return gson.fromJson(json, Object[].class);
+    }
 }

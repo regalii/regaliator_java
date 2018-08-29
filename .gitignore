@@ -1,2 +1,8 @@
 # JAR files.
 target/*
+
+# GSON lib
+gson-*
+
+# Direnv file
+.envrc

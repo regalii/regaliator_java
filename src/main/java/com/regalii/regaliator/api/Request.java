@@ -36,6 +36,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.Arrays;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
@@ -71,6 +77,11 @@ public class Request {
 
     public Response post(final String endpoint, final Map<String, Object> params) {
         return requestWithBody("POST", endpoint, params);
+    }
+
+    public Response delete(final String endpoint) {
+        final HttpURLConnection connection = buildConnection("DELETE", endpoint, null);
+        return new Response(connection);
     }
 
     private Response requestWithBody(final String httpMethod, final String endpoint, final Map<String, Object> params) {
@@ -124,6 +135,10 @@ public class Request {
         try {
             final URL url = buildURL(endpoint);
 
+            if (httpMethod.equals("PATCH")) {
+                allowMethods("PATCH");
+            }
+
             HttpURLConnection connection;
             if (configuration.isUsingSSL()) {
                 connection = (HttpsURLConnection) url.openConnection();
@@ -150,5 +165,29 @@ public class Request {
 
     private String getProtocol() {
         return configuration.isUsingSSL() ? "https" : "http";
+    }
+
+    /**
+     * Solution taken from: https://stackoverflow.com/questions/25163131/httpurlconnection-invalid-http-method-patch
+     */
+    private static void allowMethods(String... methods) {
+        try {
+            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
+
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
+
+            methodsField.setAccessible(true);
+
+            String[] oldMethods = (String[]) methodsField.get(null);
+            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
+            methodsSet.addAll(Arrays.asList(methods));
+            String[] newMethods = methodsSet.toArray(new String[0]);
+
+            methodsField.set(null/*static field*/, newMethods);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

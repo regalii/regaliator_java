@@ -22,13 +22,41 @@
 
 package com.regalii.regaliator.v32;
 
+import com.regalii.regaliator.api.AbstractEndpoint;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Response;
 
-/**
- * Created by Geoffrey Roguelon on 17/01/2017.
- */
-public class Bill extends com.regalii.regaliator.v30.Bill {
-    public Bill(Configuration configuration) {
-        super(configuration);
-    }
+import java.util.Map;
+
+public class Bill extends AbstractEndpoint {
+  public Bill(Configuration configuration) {
+    super(configuration);
+  }
+
+  public Response create(final Map<String, Object> params) {
+    return request.post("/bills", params);
+  }
+
+  public Response list(final Map<String, Object> params) {
+    return request.get("/bills", params);
+  }
+
+  // public Response show(final int id) {
+  //   return request.get("/bills/" + id);
+  // }
+
+  public Response update(final String id, final Map<String, Object> params) {
+    return request.patch("/bills/" + id, params);
+  }
+
+  public Response delete(final String uuid) {
+    return request.delete("/bills/" + uuid);
+  }
+
+  // public Response refresh(final int id) {
+  //   return request.post("/bills/" + id + "/refresh");
+  // }
+
+  // bulk_refresh
+
 }
