@@ -105,7 +105,7 @@ public class RegaliatorXdataV32 {
 
     // Once this challenge has been answered, it will need to be changed to
     // test again
-    map.put("login", "question.thalia");
+    map.put("login", "question.arcus");
     map.put("password", "12345");
     map.put("biller_id", "04257afb-d956-4606-816b-4bc540cd187f");
 
@@ -128,7 +128,7 @@ public class RegaliatorXdataV32 {
         Map<String, String> challenge_response = new HashMap<String, String>();
         challenge_response.put("id",  (String) challenge.get("uuid"));
         challenge_response.put("type", "question");
-        challenge_response.put("response", "thalia");
+        challenge_response.put("response", "arcus");
         ArrayList<Map<String, String>> a = new ArrayList<Map<String, String>>();
         a.add(challenge_response);
 

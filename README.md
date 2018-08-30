@@ -42,7 +42,17 @@ regalii:regaliator_java$ mvn package
 
 This should generate the jar file: `target/regaliator-0.0.1-SNAPSHOT.jar`.
 
-2.  Run any of the example classes provided like this:
+2.  The example code requires that your credentials are available through
+    environment variables. Our team likes to use [Direnv](https://direnv.net/)
+    to facilitate this task when working locally. If you decide to use it, your
+    `.envrc` file should look something like this:
+
+```
+export API_KEY=your_api_key
+export SECRET_KEY=your_secret_key
+```
+
+3.  Run any of the example classes provided like this:
 
 ```
 regalii:regaliator_java$ java -cp "gson-2.8.5.jar:target/regaliator-0.0.1-SNAPSHOT.jar" com.regalii.regaliator.RegaliatorXdataV32
