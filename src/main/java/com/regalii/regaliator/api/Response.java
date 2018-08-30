@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Geoffrey Roguelon on 17/01/2017.
@@ -59,6 +61,28 @@ public class Response {
 
         //noinspection unchecked
         return (Map<String, Object>) JSON.loadToMap(raw);
+    }
+
+    public void printHeaders() {
+      Map<String, List<String>> hdrs = connection.getHeaderFields();
+      Set<String> hdrKeys = hdrs.keySet();
+
+      for (String k : hdrKeys)
+        System.out.println("Key: " + k + "  Value: " + hdrs.get(k));
+    }
+
+    public String getXPaginationHeader() {
+      Map<String, List<String>> hdrs = connection.getHeaderFields();
+
+      return (String) hdrs.get("X-Pagination").toArray()[0];
+    }
+
+    public Integer getTotalEntries() {
+      String pagination_header = getXPaginationHeader();
+      Map<String, Object> map =
+        (Map<String, Object>) JSON.loadToMap(pagination_header);
+      Double total_entries = (Double) map.get("total_entries");
+      return total_entries.intValue();
     }
 
     private String rawBody() {

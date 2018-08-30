@@ -22,13 +22,18 @@
 
 package com.regalii.regaliator.v32;
 
+import com.regalii.regaliator.api.AbstractEndpoint;
 import com.regalii.regaliator.api.Configuration;
+import com.regalii.regaliator.api.Response;
 
-/**
- * Created by Geoffrey Roguelon on 18/01/2017.
- */
-public class Biller extends com.regalii.regaliator.v30.Biller {
+import java.util.Map;
+
+public class Biller extends AbstractEndpoint {
     public Biller(Configuration configuration) {
         super(configuration);
+    }
+
+    public Response list(final Map<String, Object> params) {
+        return request.get("/billers", params);
     }
 }
