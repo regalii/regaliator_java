@@ -43,11 +43,7 @@ public class Client extends AbstractClient {
 
     public Biller getBiller() {
         return new Biller(configuration);
-    }
-
-    public Rate getRate() {
-        return new Rate(configuration);
-    }
+    }    
 
     public Transaction getTransaction() {
         return new Transaction(configuration);
