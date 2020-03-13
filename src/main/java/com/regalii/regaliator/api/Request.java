@@ -24,7 +24,6 @@ package com.regalii.regaliator.api;
 
 import com.regalii.regaliator.utils.AuthHash;
 import com.regalii.regaliator.utils.JSON;
-import com.regalii.regaliator.utils.MD5;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.net.URLEncoder;
@@ -86,8 +85,7 @@ public class Request {
 
     private Response requestWithBody(final String httpMethod, final String endpoint, final Map<String, Object> params) {
         final String json = JSON.dump(params);
-        final String md5 = MD5.digest(json);
-        final HttpURLConnection connection = buildConnection(httpMethod, endpoint, md5);
+        final HttpURLConnection connection = buildConnection(httpMethod, endpoint, null);
 
         connection.setDoOutput(true);
         final OutputStream os;
@@ -129,7 +127,7 @@ public class Request {
         return new URL(getProtocol() + "://" + configuration.getHost() + endpoint);
     }
 
-    private HttpURLConnection buildConnection(final String httpMethod, final String endpoint, final String md5) {
+    private HttpURLConnection buildConnection(final String httpMethod, final String endpoint, final String var) {
         final String date = configuration.getDate();
 
         try {
@@ -145,12 +143,12 @@ public class Request {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-            final String authHash = new AuthHash(configuration).generate(md5, endpoint, date);
+            final String authHash = new AuthHash(configuration).generate(null, endpoint, date);
 
             connection.setRequestMethod(httpMethod);
             connection.setRequestProperty("Accept", configuration.getAccept());
             connection.setRequestProperty("Authorization", authHash);
-            connection.setRequestProperty("Content-MD5", md5);
+            connection.setRequestProperty("Content-MD5", null);
             connection.setRequestProperty("Content-Type", configuration.getContentType());
             connection.setRequestProperty("Date", date);
             connection.setRequestProperty("User-Agent", configuration.getUserAgent());
