@@ -53,7 +53,7 @@ public class Request {
     }
 
     public Response get(final String endpoint) {
-        final HttpURLConnection connection = buildConnection("GET", endpoint, null);
+        final HttpURLConnection connection = buildConnection("GET", endpoint);
         return new Response(connection);
     }
 
@@ -61,7 +61,7 @@ public class Request {
         if(params == null) {
             return get(endpoint);
         } else {
-            final HttpURLConnection connection = buildConnection("GET", endpoint + "?" + urlEncodeUTF8(params), null);
+            final HttpURLConnection connection = buildConnection("GET", endpoint + "?" + urlEncodeUTF8(params));
             return new Response(connection);
         }
     }
@@ -79,13 +79,13 @@ public class Request {
     }
 
     public Response delete(final String endpoint) {
-        final HttpURLConnection connection = buildConnection("DELETE", endpoint, null);
+        final HttpURLConnection connection = buildConnection("DELETE", endpoint);
         return new Response(connection);
     }
 
     private Response requestWithBody(final String httpMethod, final String endpoint, final Map<String, Object> params) {
         final String json = JSON.dump(params);
-        final HttpURLConnection connection = buildConnection(httpMethod, endpoint, null);
+        final HttpURLConnection connection = buildConnection(httpMethod, endpoint);
 
         connection.setDoOutput(true);
         final OutputStream os;
@@ -127,7 +127,7 @@ public class Request {
         return new URL(getProtocol() + "://" + configuration.getHost() + endpoint);
     }
 
-    private HttpURLConnection buildConnection(final String httpMethod, final String endpoint, final String var) {
+    private HttpURLConnection buildConnection(final String httpMethod, final String endpoint) {
         final String date = configuration.getDate();
 
         try {
@@ -143,7 +143,7 @@ public class Request {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-            final String authHash = new AuthHash(configuration).generate(null, endpoint, date);
+            final String authHash = new AuthHash(configuration).generate(endpoint, date);
 
             connection.setRequestMethod(httpMethod);
             connection.setRequestProperty("Accept", configuration.getAccept());

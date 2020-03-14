@@ -6,3 +6,8 @@ gson-*
 
 # Direnv file
 .envrc
+
+.DS_store
+.project
+.settings
+.classpath

@@ -36,7 +36,7 @@ public class AuthHash {
         this.configuration = configuration;
     }
 
-    public String generate(final String var, final String endpoint, final String date) {
+    public String generate(final String endpoint, final String date) {
         final String canonicalName = String.join(DELIMITER, configuration.getContentType(), "", endpoint, date);
         final String fingerprint = HMACSHA1.digest(configuration.getSecretKey(), canonicalName);
 
