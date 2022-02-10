@@ -23,6 +23,7 @@
 package com.regalii.regaliator.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.Map;
 
@@ -39,7 +40,12 @@ public class JSON {
     static public Object loadToMap(final String json) {
         final Gson gson = new Gson();
 
-        return gson.fromJson(json, Map.class);
+        try {
+            return gson.fromJson(json, Map.class);
+        }
+        catch (JsonSyntaxException e) {
+            throw new JsonSyntaxException(String.format("Expected a JSON string but got: \"%s\".", json), e);
+        }
     }
 
     static public Object[] getArray(final Object root) {
